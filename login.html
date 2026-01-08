@@ -62,11 +62,95 @@
                 <button type="submit" class="btn-submit">Login</button>
             </form>
             
+            
             <div class="register-link">
                 Belum punya akun? <a href="register.html">Daftar di sini</a>
             </div>
+            
+            <!-- Info Button -->
+            <div class="info-footer">
+                <button class="btn-info-text" id="infoBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    <span>Tentang akun testing</span>
+                </button>
+            </div>
         </div>
     </div>
+    </div>
+    
+    <!-- Info Modal -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Akun Testing</h3>
+            <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Akun untuk testing asisten & dosen</p>
+            
+            <div class="account-info">
+                <div class="account-card">
+                    <h4>Akun Pembeli</h4>
+                    <div class="account-details">
+                        <div class="detail-row">
+                            <span class="label">Email:</span>
+                            <div class="value-with-copy">
+                                <span class="value" id="emailPembeli">user@platoo.com</span>
+                                <button class="btn-copy" onclick="copyToClipboard('emailPembeli')" title="Copy">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Password:</span>
+                            <div class="value-with-copy">
+                                <span class="value" id="passwordPembeli">123456</span>
+                                <button class="btn-copy" onclick="copyToClipboard('passwordPembeli')" title="Copy">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="account-card">
+                    <h4>Akun Penjual</h4>
+                    <div class="account-details">
+                        <div class="detail-row">
+                            <span class="label">Email:</span>
+                            <div class="value-with-copy">
+                                <span class="value" id="emailPenjual">admin@platoo.com</span>
+                                <button class="btn-copy" onclick="copyToClipboard('emailPenjual')" title="Copy">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Password:</span>
+                            <div class="value-with-copy">
+                                <span class="value" id="passwordPenjual">123456</span>
+                                <button class="btn-copy" onclick="copyToClipboard('passwordPenjual')" title="Copy">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <footer class="page-footer">
@@ -78,5 +162,29 @@
     <script src="src/js/services/auth-service.js"></script>
     <script src="src/js/utils/utils.js"></script>
     <script src="src/js/login.js"></script>
+    <script>
+        // Copy to clipboard function - global function for onclick handlers
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Show feedback
+                const button = element.parentElement.querySelector('.btn-copy');
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                button.style.background = '#d1fae5';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.background = '';
+                }, 1500);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+        
+        window.copyToClipboard = copyToClipboard;
+    </script>
 </body>
 </html>

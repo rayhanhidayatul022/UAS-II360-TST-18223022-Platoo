@@ -1,5 +1,68 @@
 ﻿// Login using Voucher API only
 let currentRole = 'pembeli';
+let modalShownThisPageLoad = false;
+
+// Initialize testing accounts and modal on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM loaded, initializing...');
+    
+    // Set user_type for testing accounts if not exists
+    const testingAccounts = [
+        { email: 'user@platoo.com', user_type: 'pembeli' },
+        { email: 'admin@platoo.com', user_type: 'penjual' }
+    ];
+    
+    testingAccounts.forEach(account => {
+        const key = 'platoo_user_type_' + account.email;
+        if (!localStorage.getItem(key)) {
+            const info = {
+                email: account.email,
+                user_type: account.user_type,
+                registered_at: new Date().toISOString()
+            };
+            localStorage.setItem(key, JSON.stringify(info));
+            console.log('✅ Testing account initialized:', account.email);
+        }
+    });
+    
+    // Initialize modal
+    const infoBtn = document.getElementById('infoBtn');
+    const infoModal = document.getElementById('infoModal');
+    const closeModal = document.querySelector('.close-modal');
+    
+    if (infoBtn && infoModal && closeModal) {
+        console.log('✅ Modal elements found');
+        
+        // Auto-show modal on page load - ALWAYS show on every page load
+        setTimeout(() => {
+            console.log('📢 Showing modal automatically on page load');
+            infoModal.style.display = 'flex';
+            modalShownThisPageLoad = true;
+        }, 800);
+        
+        // Button click handler
+        infoBtn.addEventListener('click', () => {
+            console.log('👆 Info button clicked');
+            infoModal.style.display = 'flex';
+        });
+        
+        // Close button handler
+        closeModal.addEventListener('click', () => {
+            console.log('❌ Close button clicked');
+            infoModal.style.display = 'none';
+        });
+        
+        // Click outside to close
+        window.addEventListener('click', (e) => {
+            if (e.target === infoModal) {
+                console.log('👆 Clicked outside modal');
+                infoModal.style.display = 'none';
+            }
+        });
+    } else {
+        console.error('❌ Modal elements not found:', { infoBtn, infoModal, closeModal });
+    }
+});
 
 // Tab switching
 document.querySelectorAll('.tab-btn').forEach(btn => {
