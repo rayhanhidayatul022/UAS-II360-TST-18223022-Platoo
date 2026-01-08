@@ -1,0 +1,369 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Platoo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/css/checkout.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="btn-back" onclick="window.history.back()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <div style="text-align: center; flex: 1;">
+                <h1 class="nav-title" style="margin: 0;">Checkout</h1>
+            </div>
+            <div style="width: 44px;"></div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Checkout Form -->
+            <div class="checkout-wrapper">
+                <!-- Order Summary Section -->
+                <section class="checkout-section order-summary-section">
+                    <div class="section-header">
+                        <h2>📋 Ringkasan Pesanan</h2>
+                    </div>
+
+                    <!-- Items List -->
+                    <div class="items-container" id="itemsContainer">
+                        <!-- Items will be dynamically inserted here -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div class="empty-cart" id="emptyCart">
+                        <div class="empty-icon">🛒</div>
+                        <h3>Keranjang Kosong</h3>
+                        <p>Tidak ada item yang dipesan</p>
+                        <a href="catalog.html" class="btn btn-primary">Kembali ke Katalog</a>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="price-breakdown" id="priceBreakdown" style="display: none;">
+                        <div class="price-row">
+                            <span class="price-label">Harga Awal</span>
+                            <span class="price-value" id="subtotal">Rp 0</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Diskon Platoo</span>
+                            <span class="price-value discount" id="restaurantDiscount">-Rp 0</span>
+                        </div>
+                        <div class="price-row" id="voucherDiscountRow" style="display: none;">
+                            <span class="price-label">Diskon Voucher</span>
+                            <span class="price-value discount" id="voucherDiscountAmount">-Rp 0</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Biaya Layanan</span>
+                            <span class="price-value" id="serviceFee">Rp 0</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Pajak (PPN 10%)</span>
+                            <span class="price-value" id="taxAmount">Rp 0</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="price-row total">
+                            <span class="price-label">Total Bayar</span>
+                            <span class="price-value" id="totalPrice">Rp 0</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Voucher Section -->
+                <section class="checkout-section voucher-section">
+                    <div class="section-header">
+                        <h3>Pilih Voucher (Opsional)</h3>
+                    </div>
+                    <div class="voucher-list" id="voucherList">
+                        <div class="loading-spinner-small"></div>
+                        <p>Memuat voucher yang tersedia...</p>
+                    </div>
+                    <div class="voucher-status" id="voucherStatus"></div>
+                </section>
+
+                <!-- Customer Information removed per request -->
+
+                <!-- Payment Method Section -->
+                <section class="checkout-section payment-section">
+                    <div class="section-header">
+                        <h3>Metode Pembayaran</h3>
+                    </div>
+                    <div class="payment-methods">
+                        <div class="payment-option">
+                            <input 
+                                type="radio" 
+                                id="paymentCash" 
+                                name="paymentMethod" 
+                                value="cash" 
+                                class="payment-radio"
+                                checked
+                            >
+                            <label for="paymentCash" class="payment-label">
+                                <div class="payment-icon">💵</div>
+                                <div class="payment-info">
+                                    <div class="payment-title">Bayar di Tempat</div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="payment-option">
+                            <input 
+                                type="radio" 
+                                id="paymentVA" 
+                                name="paymentMethod" 
+                                value="virtual_account" 
+                                class="payment-radio"
+                            >
+                            <label for="paymentVA" class="payment-label">
+                                <div class="payment-icon">🏦</div>
+                                <div class="payment-info">
+                                    <div class="payment-title">Virtual Account</div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="payment-option">
+                            <input 
+                                type="radio" 
+                                id="paymentEWallet" 
+                                name="paymentMethod" 
+                                value="ewallet" 
+                                class="payment-radio"
+                            >
+                            <label for="paymentEWallet" class="payment-label">
+                                <div class="payment-icon">📱</div>
+                                <div class="payment-info">
+                                    <div class="payment-title">QRIS</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Agreement Section -->
+                <section class="checkout-section agreement-section">
+                    <div class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="agreeTerms" 
+                            class="checkbox-input"
+                        >
+                        <label for="agreeTerms" class="checkbox-label">
+                            Saya telah membaca dan setuju dengan <a href="#" class="link">syarat dan ketentuan</a> Platoo
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Action Buttons -->
+                <div class="checkout-actions" id="checkoutActions" style="display: none;">
+                    <button class="btn btn-primary btn-large" id="confirmCheckoutBtn">Konfirmasi Pesanan</button>
+                </div>
+            </div>
+
+            <!-- Order Summary Card (Desktop Sidebar) -->
+            <aside class="order-summary-card" id="orderSummaryCard">
+                <div class="card-header">
+                    <h3> Ringkasan Pesanan </h3>
+                </div>
+                    <div class="card-content">
+                    <div class="summary-item" id="cartItemCount">
+                        <span>Total Item:</span>
+                        <strong>0</strong>
+                    </div>
+                    <div class="summary-item" id="cartSubtotal">
+                        <span>Harga Awal:</span>
+                        <strong id="sidebarSubtotal">Rp 0</strong>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="summary-item total">
+                        <span>Total Bayar:</span>
+                        <strong id="sidebarTotal">Rp 0</strong>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Memproses pesanan...</p>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal" style="display: none;">
+        <div class="modal-content success-modal">
+            <div class="modal-body">
+                <!-- Top Dots (Ticket Perforation) -->
+                <div class="top-dots">
+                    <div class="dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <!-- Animated Success Icon -->
+                <div class="success-icon-wrapper">
+                    <div class="success-icon-circle">
+                        <svg class="success-checkmark" viewBox="0 0 52 52">
+                            <circle class="success-checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                            <path class="success-checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Title & Message -->
+                <h2 class="success-title">Pesanan Berhasil Dibuat!</h2>
+                <p class="success-subtitle">Terima kasih telah memesan</p>
+                <p class="success-message" id="successMessage">Silakan tunggu konfirmasi dari restoran</p>
+
+                <!-- Order Details Card -->
+                <div class="success-details-card">
+                    <div class="success-detail-row">
+                        <div class="success-detail-item">
+                            <div class="detail-icon-wrapper">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                </svg>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Nomor Pesanan</div>
+                                <div class="detail-value" id="orderNumber">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="success-detail-item">
+                            <div class="detail-icon-wrapper">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                                </svg>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Metode Pembayaran</div>
+                                <div class="detail-value" id="paymentMethod">Cash</div>
+                            </div>
+                        </div>
+                        <div class="success-detail-item">
+                            <div class="detail-icon-wrapper">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-label">Total Pembayaran</div>
+                                <div class="detail-value detail-value-price" id="successTotalPrice">Rp 0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="success-actions">
+                    <button class="btn-success-primary" onclick="goToDashboard()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Kembali ke Dashboard
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Dots (Ticket Perforation) -->
+            <div class="bottom-dots">
+                <div class="dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal" id="errorModal" style="display: none;">
+        <div class="modal-content error-modal">
+            <div class="modal-header">
+                <button class="btn-close" onclick="closeModal('errorModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="error-icon">⚠️</div>
+                <h2>Terjadi Kesalahan</h2>
+                <p id="errorMessage">Silakan coba lagi nanti.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('errorModal')">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <footer style="background-color: #4A0E78; color: white; text-align: center; padding: 15px 20px; font-family: 'Poppins', sans-serif; margin-top: 30px;">
+        <p style="margin: 0; font-size: 14px;">&copy; 2025 Princessfa Azzahra Alvin - 18223044 & Rayhan Hidayatul Fikri - 18223022. <strong>Platoo #StartFromYourPlate</strong></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="src/js/email-service.js"></script>
+    <script src="src/js/checkout.js?v=6"></script>
+</body>
+</html>

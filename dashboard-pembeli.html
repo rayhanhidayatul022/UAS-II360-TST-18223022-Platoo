@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pembeli - Platoo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/css/dashboard-pembeli.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <img src="src/img/logoPlatoo.png" alt="Platoo Logo" class="nav-logo">
+            </div>
+            <div class="nav-center">
+                <div class="search-bar">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Cari makanan favorit Anda...">
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="btn-cart" onclick="window.location.href='checkout.html'" title="Keranjang">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+                <button class="btn-history" onclick="window.location.href='history-pembelian.html'" title="Riwayat Pembelian">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v5h5"></path>
+                        <path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"></path>
+                        <path d="M12 7v5l4 2"></path>
+                    </svg>
+                </button>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <span id="userInitial">P</span>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name" id="userName">Pembeli</span>
+                        <span class="user-role">Pembeli</span>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 19H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h4M14 15l5-5-5-5M19 10H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Keluar
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Welcome, <span id="welcomeName">Pembeli</span>!</h1>
+                <p>Temukan makanan berkualitas dengan harga terjangkau dan bantu kurangi food waste</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-container">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-left">
+                    <h2>Catalog Makanan (<span id="totalFoods">0</span>)</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">
+                            <span>All Foods</span>
+                            <span class="filter-count" id="countAll">0</span>
+                        </button>
+                        <button class="filter-btn" data-filter="available">
+                            <span>Ready Stock Foods</span>
+                            <span class="filter-count" id="countAvailable">0</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-state" id="loadingState">
+                <div class="loading-spinner"></div>
+                <p>Memuat menu makanan...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <h3>Belum Ada Menu</h3>
+                <p>Menu makanan akan muncul di sini</p>
+            </div>
+
+            <!-- Food Grid -->
+            <div class="restaurant-grid" id="foodGrid">
+                <!-- Cards will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Rayhan Hidayatul Fikri - 18223022. <strong>Platoo #StartFromYourPlate</strong></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="src/js/dashboard-pembeli.js"></script>
+    
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+</body>
+</html>
