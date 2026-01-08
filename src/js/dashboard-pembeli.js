@@ -63,6 +63,14 @@ function setupEventListeners() {
         });
     }
     
+    // History button - locked feature
+    const historyBtn = document.getElementById('historyBtn');
+    if (historyBtn) {
+        historyBtn.addEventListener('click', function() {
+            showToast('Fitur masih dalam pengembangan', 'warning');
+        });
+    }
+    
     // Search functionality
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
@@ -388,10 +396,24 @@ function updateCartBadge() {
 function showToast(message, type = 'success') {
     // Simple toast notification
     const toast = document.createElement('div');
-    const bgColor = type === 'success' ? '#10b981' : '#dc2626';
+    let bgColor;
+    switch(type) {
+        case 'success':
+            bgColor = '#10b981';
+            break;
+        case 'error':
+            bgColor = '#dc2626';
+            break;
+        case 'warning':
+            bgColor = '#f59e0b';
+            break;
+        default:
+            bgColor = '#10b981';
+    }
+    
     toast.style.cssText = `
         position: fixed;
-        bottom: 20px;
+        top: 20px;
         right: 20px;
         background: ${bgColor};
         color: white;
