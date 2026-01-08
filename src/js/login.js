@@ -85,11 +85,21 @@ async function loginPembeli(email, password) {
             return;
         }
         
-        // Check if user is pembeli (USER role)
-        if (result.user.role !== 'USER') {
-            showMessage('Akun tidak ditemukan.', 'error');
-            await authService.logout();
-            return;
+        // Cek user_type dari localStorage (workaround karena backend tidak support role)
+        const userTypeKey = 'platoo_user_type_' + email;
+        const userTypeData = localStorage.getItem(userTypeKey);
+        
+        if (userTypeData) {
+            const userType = JSON.parse(userTypeData);
+            console.log('Found user_type in localStorage:', userType);
+            
+            // Jika user_type adalah penjual, redirect ke login penjual
+            if (userType.user_type === 'penjual') {
+                showMessage('Silakan login sebagai penjual!', 'error');
+                // Switch to penjual tab
+                document.querySelector('[data-role="penjual"]').click();
+                return;
+            }
         }
 
         // Save user data to localStorage
@@ -131,14 +141,35 @@ async function loginPenjual(email, password) {
             return;
         }
         
-        // Check if user is penjual (ADMIN role)
-        if (result.user.role !== 'ADMIN') {
-            showMessage('Akun tidak ditemukan.', 'error');
-            await authService.logout();
-            return;
+        // Cek user_type dari localStorage (workaround karena backend tidak support role)
+        const userTypeKey = 'platoo_user_type_' + email;
+        const userTypeData = localStorage.getItem(userTypeKey);
+        
+        if (userTypeData) {
+            const userType = JSON.parse(userTypeData);
+            console.log('Found user_type in localStorage:', userType);
+            
+            // Validasi bahwa user ini adalah penjual
+            if (userType.user_type !== 'penjual') {
+                showMessage('Akun ini bukan akun penjual!', 'error');
+                // Switch to pembeli tab
+                document.querySelector('[data-role="pembeli"]').click();
+                return;
+            }
+        } else {
+            // Fallback: Jika tidak ada data user_type, tapi user login via tab penjual
+            // Anggap dia penjual dan simpan info-nya
+            console.log('No user_type found, creating penjual entry (fallback)');
+            const penjualInfo = {
+                email: email,
+                user_type: 'penjual',
+                registered_at: new Date().toISOString()
+            };
+            localStorage.setItem(userTypeKey, JSON.stringify(penjualInfo));
+            console.log('✅ Penjual info saved to localStorage:', penjualInfo);
         }
 
-        // Save user data to localStorage
+        // Save user data to localStorage dengan role penjual
         localStorage.setItem('platoo_user', JSON.stringify({
             id: result.user.id,
             nama_restoran: result.user.full_name || result.user.email,

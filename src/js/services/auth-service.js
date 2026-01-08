@@ -69,17 +69,24 @@ class AuthService extends ApiService {
      */
     async register(email, password, full_name, role = 'USER') {
         try {
+            const requestBody = { email, password, full_name, role };
+            console.log('📤 AuthService.register - Sending request body:', requestBody);
+            console.log('📤 Role parameter received:', role);
+            console.log('📤 Full URL:', `${this.baseUrl}${API_CONFIG.endpoints.auth.register}`);
+            
             const response = await this.post(
                 API_CONFIG.endpoints.auth.register,
-                { email, password, full_name, role }
+                requestBody
             );
             
             console.log('✅ Register response:', response);
+            console.log('📥 Response data:', response.data);
+            console.log('📥 User role in response:', response.data?.user?.role);
             
             return response;
             
         } catch (error) {
-            console.error('Register error:', error);
+            console.error('❌ Register error:', error);
             throw error;
         }
     }

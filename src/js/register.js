@@ -141,10 +141,6 @@ async function registerPembeli() {
         showMessage('Format email tidak valid! Gunakan email yang proper (contoh: nama.anda@gmail.com)', 'error');
         return;
     }
-    if (!emailRegex.test(email)) {
-        showMessage('Format email tidak valid!', 'error');
-        return;
-    }
 
     if (password !== confirmPassword) {
         showMessage('Password dan konfirmasi password tidak cocok!', 'error');
@@ -162,9 +158,20 @@ async function registerPembeli() {
     }
 
     try {
+        console.log('📤 Sending registration request (Pembeli):', { email, nama });
+        // Backend akan create user dengan role USER
         const result = await authService.register(email, password, nama);
         
         if (result.success) {
+            // Simpan info bahwa user ini adalah pembeli
+            const pembeliInfo = {
+                email: email,
+                user_type: 'pembeli',
+                registered_at: new Date().toISOString()
+            };
+            localStorage.setItem('platoo_user_type_' + email, JSON.stringify(pembeliInfo));
+            console.log('✅ Pembeli info saved to localStorage:', pembeliInfo);
+            
             showMessage('Registrasi berhasil! Silakan melakukan login.', 'success');
             setTimeout(() => {
                 window.location.href = 'login.html';
@@ -221,13 +228,23 @@ async function registerPenjual() {
     }
 
     try {
-        console.log('📤 Sending registration request:', { email, namaRestoran, role: 'ADMIN' });
+        console.log('📤 Sending registration request (Penjual):', { email, namaRestoran });
+        // Backend akan create user dengan role USER, tapi kita simpan info penjual di localStorage
         const result = await authService.register(email, password, namaRestoran, 'ADMIN');
         
         console.log('📥 Registration result:', result);
         
         if (result.success) {
-            showMessage('Registrasi berhasil! Cek email Anda untuk konfirmasi, lalu login.', 'success');
+            // Simpan info bahwa user ini adalah penjual
+            const penjualInfo = {
+                email: email,
+                user_type: 'penjual',
+                registered_at: new Date().toISOString()
+            };
+            localStorage.setItem('platoo_user_type_' + email, JSON.stringify(penjualInfo));
+            console.log('✅ Penjual info saved to localStorage:', penjualInfo);
+            
+            showMessage('Registrasi berhasil! Silakan lakukan login ke akunmu.', 'success');
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 3000);
